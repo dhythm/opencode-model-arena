@@ -298,8 +298,27 @@ const EVENT_LABELS = {
   'task-updated': (t) => `✏️ 「${t.title}」を更新${t.done ? '（完了✓）' : ''}`,
   'task-deleted': (t) => `🗑️ 「${t.title}」を削除`,
   'column-created': (c) => `📂 カラム「${c.title}」を追加`,
+  'column-updated': (c) => `📂 カラム「${c.title}」を更新`,
   'column-deleted': (c) => `🗑️ カラム「${c.title}」を削除`,
 };
+
+const BOARD_SYNC_EVENTS = new Set([
+  'task-created', 'task-updated', 'task-deleted',
+  'column-created', 'column-updated', 'column-deleted', 'board-updated',
+]);
+
+let syncTimer;
+function requestBoardSync() {
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => {
+    syncBoard().catch((err) => toast(`ボードの再同期に失敗しました: ${err.message}`, true));
+  }, 100);
+}
+
+async function syncBoard() {
+  state.board = await api('/api/board');
+  render();
+}
 
 function connectEvents() {
   const es = new EventSource('/api/events');
@@ -309,9 +328,13 @@ function connectEvents() {
   };
   for (const [type, format] of Object.entries(EVENT_LABELS)) {
     es.addEventListener(type, (e) => {
-      try { logActivity(format(JSON.parse(e.data))); } catch { /* malformed event */ }
+      let payload = null;
+      try { payload = JSON.parse(e.data); } catch { /* malformed event */ }
+      if (payload) logActivity(format(payload));
+      if (BOARD_SYNC_EVENTS.has(type)) requestBoardSync();
     });
   }
+  es.addEventListener('board-updated', () => requestBoardSync());
   es.onerror = () => logActivity('⏳ 接続が切断されました。再接続中…');
 }
 

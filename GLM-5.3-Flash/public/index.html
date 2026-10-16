@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GLM Board — リアルタイムカンバン</title>
+<link rel="stylesheet" href="/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">⚡</span>
+    <div>
+      <h1>GLM Board</h1>
+      <p class="subtitle">リアルタイム同期カンバンボード</p>
+    </div>
+  </div>
+  <div class="stats" id="stats" aria-label="統計">読み込み中…</div>
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 タスクを検索…" autocomplete="off" />
+    <button id="themeToggle" class="icon-btn" title="テーマ切替" aria-label="テーマ切替">🌙</button>
+  </div>
+</header>
+
+<main class="board" id="board" aria-label="カンバンボード"></main>
+
+<aside class="activity" aria-label="アクティビティ">
+  <h2><span class="live-dot" aria-hidden="true"></span> ライブアクティビティ</h2>
+  <ul id="activityList" class="activity-list"><li class="muted">接続中…</li></ul>
+</aside>
+
+<dialog id="taskDialog">
+  <form id="taskForm" method="dialog">
+    <h2 id="dialogTitle">タスクを編集</h2>
+    <label>タイトル
+      <input id="fTitle" name="title" required maxlength="200" placeholder="例: APIの設計をまとめる" />
+    </label>
+    <div class="row">
+      <label>担当者
+        <input id="fAssignee" name="assignee" maxlength="60" placeholder="任意" />
+      </label>
+      <label>優先度
+        <select id="fPriority" name="priority">
+          <option value="low">低</option>
+          <option value="medium">中</option>
+          <option value="high">高</option>
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <label>ステータス
+        <select id="fColumn" name="columnId"></select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="fDone" name="done" /> 完了
+      </label>
+    </div>
+    <div class="dialog-actions">
+      <button type="button" id="deleteBtn" class="danger">削除</button>
+      <span class="spacer"></span>
+      <button type="button" id="cancelBtn">キャンセル</button>
+      <button type="submit" id="saveBtn" class="primary">保存</button>
+    </div>
+  </form>
+</dialog>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "glm-board",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "リアルタイム同期カンバンボード - Node.js 零依存フルスタックデモ",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "node --watch server/app.js",
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

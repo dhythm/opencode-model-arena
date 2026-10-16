@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DeepSeek TypeRace — リアルタイム対戦タイピング</title>
+    <meta name="description" content="リアルタイム対戦タイピング。部屋を作って友達とWPMを競おう。" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌨️</text></svg>" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <main id="app">
+      <section id="home" class="screen">
+        <div class="hero">
+          <div class="logo">⌨️</div>
+          <h1>DeepSeek <span class="grad">TypeRace</span></h1>
+          <p class="tagline">リアルタイム対戦タイピング — 速さと正確さを競え</p>
+        </div>
+
+        <div class="card">
+          <label class="field-label" for="name">ニックネーム</label>
+          <input id="name" class="input" maxlength="20" placeholder="例: yuta" autocomplete="off" />
+          <div class="join-actions">
+            <button id="create" class="btn primary">部屋を作る</button>
+            <div class="join-code">
+              <input id="code" class="input code-input" maxlength="4" placeholder="コード" autocomplete="off" />
+              <button id="join" class="btn">参加</button>
+            </div>
+          </div>
+          <p id="home-error" class="error-text" role="alert"></p>
+        </div>
+
+        <div class="card leaderboard-card">
+          <h2>殿堂 <span class="muted">Top 10</span></h2>
+          <ol id="leaderboard" class="leaderboard"><li class="empty">まだ記録がありません</li></ol>
+        </div>
+      </section>
+
+      <section id="lobby" class="screen hidden">
+        <div class="lobby-head">
+          <div class="room-code">
+            <span class="field-label">ルームコード</span>
+            <strong id="lobby-code">----</strong>
+            <button id="copy" class="btn tiny">コピー</button>
+          </div>
+          <button id="leave" class="btn ghost tiny">退出</button>
+        </div>
+
+        <div class="card">
+          <h2>お題</h2>
+          <div id="text-picker" class="text-picker"></div>
+        </div>
+
+        <div class="card">
+          <h2>プレイヤー <span class="muted" id="player-count">0</span></h2>
+          <ul id="player-list" class="player-list"></ul>
+        </div>
+
+        <div class="lobby-actions">
+          <button id="ready" class="btn">準備OK</button>
+          <button id="start" class="btn primary" disabled>スタート</button>
+        </div>
+        <p id="lobby-hint" class="hint"></p>
+      </section>
+
+      <section id="race" class="screen hidden">
+        <div id="countdown" class="countdown hidden"><span id="countdown-num">3</span></div>
+
+        <div class="race-stats">
+          <div class="stat"><span class="stat-value" id="stat-wpm">0</span><span class="stat-label">WPM</span></div>
+          <div class="stat"><span class="stat-value" id="stat-acc">100%</span><span class="stat-label">正確率</span></div>
+          <div class="stat"><span class="stat-value" id="stat-time">0.0s</span><span class="stat-label">経過</span></div>
+        </div>
+
+        <div id="typing-view" class="typing-view"></div>
+        <input
+          id="typing-input"
+          class="typing-input"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="タイピング入力"
+        />
+        <p class="hint">入力欄をクリックしてタイプ開始</p>
+
+        <div id="lanes" class="lanes"></div>
+      </section>
+
+      <section id="result" class="screen hidden">
+        <h2 class="result-title">結果発表</h2>
+        <ol id="result-list" class="result-list"></ol>
+        <div class="result-actions">
+          <button id="rematch" class="btn primary hidden">もう一度</button>
+          <button id="result-leave" class="btn ghost">退出</button>
+        </div>
+        <p id="result-hint" class="hint"></p>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden" role="status"></div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
